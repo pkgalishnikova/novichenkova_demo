@@ -11,7 +11,7 @@ export default NextAuth({
   callbacks: {
     async signIn({ user }) {
       // Only allow the owner’s email to log in
-      const allowedAdmins = ["polina.gal070904@gmail.com"];
+      const allowedAdmins = ["polina.gal070904@gmail.com", "d.parshina28@gmail.com"];
       if (allowedAdmins.includes(user.email ?? "")) {
         return true;
       }
@@ -19,7 +19,7 @@ export default NextAuth({
     },
     async session({ session }) {
         if (session.user) {
-            if (session.user.email === "polina.gal070904@gmail.com") {
+            if ((session.user.email === "polina.gal070904@gmail.com") || (session.user.email === "d.parshina@gmail.com")) {
                 session.user.role = "admin";
             } else {
                 session.user.role = "user";

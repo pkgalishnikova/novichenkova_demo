@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+const allowedAdmins = ["polina.gal070904@gmail.com", "d.parshina28@gmail.com"];
+
 export default NextAuth({
   providers: [
     GoogleProvider({
@@ -10,22 +12,18 @@ export default NextAuth({
   ],
   callbacks: {
     async signIn({ user }) {
-      // Only allow the owner’s email to log in
-      const allowedAdmins = ["polina.gal070904@gmail.com", "d.parshina28@gmail.com"];
-      if (allowedAdmins.includes(user.email ?? "")) {
-        return true;
-      }
-      return false;
+      // Only allow allowed admins to log in
+      return allowedAdmins.includes(user.email ?? "");
     },
     async session({ session }) {
-        if (session.user) {
-            if ((session.user.email === "polina.gal070904@gmail.com") || (session.user.email === "d.parshina@gmail.com")) {
-                session.user.role = "admin";
-            } else {
-                session.user.role = "user";
-            }
+      if (session.user) {
+        if (allowedAdmins.includes(session.user.email ?? "")) {
+          session.user.role = "admin";
+        } else {
+          session.user.role = "user";
         }
-        return session;
-    }
+      }
+      return session;
+    },
   },
 });

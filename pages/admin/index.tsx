@@ -93,6 +93,21 @@ function AdminDashboard() {
       });
     }
   };
+  
+  async function handleDelete(id: string) {
+    const confirmed = confirm("Are you sure you want to delete this item?");
+    if (!confirmed) return;
+
+    const res = await fetch(`/api/items/${id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      setItems((prev) => prev.filter((item) => item.id !== id));
+    } else {
+      console.error("Failed to delete item");
+    }
+  }
 
   if (status === "loading") {
     return (
@@ -133,23 +148,16 @@ function AdminDashboard() {
   return (
     <Container maxW="container.xl" py={8}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={8}>
-        <Box>
-          <Heading as="h1" size="2xl" mb={2} color="orange.700">
-            Pottery Collection
-          </Heading>
-          <Text fontSize="lg" color="gray.600">
-            Admin Dashboard - Manage your pottery items
-          </Text>
-        </Box>
         <Button colorScheme="teal" size="lg" onClick={onOpen}>
-          + Add Item
+          + Добавить товар
         </Button>
       </Box>
 
       <Grid 
         isLoading={isLoading} 
         items={items} 
-        emptyText="No items yet. Click 'Add Item' to get started!" 
+        emptyText="No items yet. Click 'Add Item' to get started!"
+        showDelete={true} // 👈 ENABLE DELETE BUTTONS FOR ADMIN
       />
 
       <AddItemModal isOpen={isOpen} onClose={onClose} onAdd={handleAddItem} />

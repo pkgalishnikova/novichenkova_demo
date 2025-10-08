@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PotteryItem {
+  id             String   @id @default(cuid())
+  name           String
+  price          Float
+  image          String
+  description    String
+  category       String
+  status         String   @default("in_stock") // "in_stock" | "preorder" | "out_of_stock"
+  weight         String?  // e.g., "300 Г"
+  dimensions     String?  // e.g., "20 × 20 × 2 СМ"
+  care           String?  // Care instructions
+  materials      String?  // e.g., "Полуфарфор, пищевые глазури"
+  additionalInfo String?  // Additional details
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  @@map("pottery_items")
+}

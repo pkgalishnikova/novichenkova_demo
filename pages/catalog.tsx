@@ -10,7 +10,7 @@ type PotteryItem = {
   image: string;
   description: string;
   category: string;
-  inStock: boolean;
+  status: "in_stock" | "preorder" | "out_of_stock";
 };
 
 export default function PotteryCatalog() {
@@ -53,15 +53,6 @@ export default function PotteryCatalog() {
 
   return (
     <Container maxW="container.xl" py={8}>
-      <Box textAlign="center" mb={8}>
-        <Heading as="h1" size="2xl" mb={4} color="brown.600">
-          Pottery Collection
-        </Heading>
-        <Heading as="h2" size="md" color="gray.600" fontWeight="normal">
-          Handcrafted ceramics made with care and tradition
-        </Heading>
-      </Box>
-      
       <Grid
         isLoading={isLoading}
         items={items}

@@ -1,55 +1,118 @@
-import { Avatar, Box, Flex, Heading, Link, Text, position } from "@chakra-ui/react";
-import NextLink from 'next/link';
+import { Box, Flex, Heading, Link, Text, Container, HStack, Image } from "@chakra-ui/react";
+import NextLink from "next/link";
+import React, { useState } from "react";
 
 export function Navbar() {
+  const [activeTab, setActiveTab] = useState("home");
 
-    return (
-        <Box
-            maxW={"2000px"}
-            m={"auto"}
-            py={"10px"}
-            px={"40px"}
-            bg={"#ededed"}
-            borderBottom={"1px solid"}
-            borderColor={"gray.300"}
-            position="sticky"
-            top="0"
-            zIndex="1000"
-        >
-            <Flex justifyContent={"space-between"} alignItems={"center"} height="60px"> {/* Fixed height */}
-                <Flex alignItems={"center"} gap={"40px"} position="relative">
-                    <Box position="fixed" left="20px" top="20px" zIndex="1100">
-                    </Box>
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-                    {/* <Box ml="60px">
-                        <Link as={NextLink} href='/'>
-                            <Heading>NFT Marketplace</Heading>
-                        </Link>
-                    </Box> */}
-                    <Link as={NextLink} href='/'>
-                        <Text>главная</Text>
-                    </Link>
-                    <Link as={NextLink} href='/catalog'>
-                        <Text>каталог</Text>
-                    </Link>
-                    <Link as={NextLink} href='/about_brand'>
-                        <Text>о бренде</Text>
-                    </Link>
-                    <Link as={NextLink} href='/contacts'>
-                        <Text>контакты</Text>
-                    </Link>
-                </Flex>
+  return (
+    <Box
+      maxW="2000px"
+      m="auto"
+      py="10px"
+      px="40px"
+      bg="rgba(250, 250, 250, 0.95)"
+      borderBottom="1px solid"
+      borderColor="gray.100"
+      position="sticky"
+      top="0"
+      zIndex="1000"
+    >
+      <Container maxW="1600px">
+        <Flex justify="space-between" align="center" py={6} px={10}>
+          <Image
+  src="/logo.png"
+  width={51}
+  height={51}
+  alt="Logo"
+  style={{ transform: 'scale(1.05)' }} // 5% bigger
+/>
 
-                <Flex alignItems={"center"} height="100%">
-                    {/* <ConnectWallet/>
-                    {address && (
-                        <Link as={NextLink} href={`/profile/${address}`}>
-                            <Avatar src='https://bit.ly/broken-link' ml={"20px"}/>
-                        </Link>
-                    )} */}
 
-                </Flex>
-            </Flex>
-        </Box>
-    )
+          <HStack spacing={12}>
+            {/* Home */}
+            <Link
+              as={NextLink}
+              href="/"
+              onClick={() => handleTabChange("home")}
+              color={activeTab === "home" ? "#f4621fff" : "#f4621fff"}
+              fontSize="14px"
+              fontWeight="400"
+              letterSpacing="0.3px"
+              textDecoration="none"
+              position="relative"
+              pb={2}
+              borderBottom={activeTab === "home" ? "1px solid #c4a484" : "none"}
+              _hover={{ color: "#1a1a1a" }}
+              transition="all 0.3s ease"
+            >
+              <Text>главная</Text>
+            </Link>
+
+            {/* Catalog */}
+            <Link
+              as={NextLink}
+              href="/catalog"
+              onClick={() => handleTabChange("catalog")}
+              color={activeTab === "catalog" ? "#f4621fff" : "#f4621fff"}
+              fontSize="14px"
+              fontWeight="400"
+              letterSpacing="0.3px"
+              textDecoration="none"
+              position="relative"
+              pb={2}
+              borderBottom={activeTab === "catalog" ? "1px solid #c4a484" : "none"}
+              _hover={{ color: "#1a1a1a" }}
+              transition="all 0.3s ease"
+            >
+              <Text>каталог</Text>
+            </Link>
+
+            {/* About Brand */}
+            <Link
+              as={NextLink}
+              href="/about_brand"
+              onClick={() => handleTabChange("about_brand")}
+              color={activeTab === "about_brand" ? "#f4621fff" : "#f4621fff"}
+              fontSize="14px"
+              fontWeight="400"
+              letterSpacing="0.3px"
+              textDecoration="none"
+              position="relative"
+              pb={2}
+              borderBottom={activeTab === "about_brand" ? "1px solid #c4a484" : "none"}
+              _hover={{ color: "#1a1a1a" }}
+              transition="all 0.3s ease"
+            >
+              <Text>о бренде</Text>
+            </Link>
+
+            {/* Contacts */}
+            <Link
+              as={NextLink}
+              href="/contacts"
+              onClick={() => handleTabChange("contacts")}
+              color={activeTab === "contacts" ? "#f4621fff" : "#f4621fff"}
+              fontSize="14px"
+              fontWeight="400"
+              letterSpacing="0.3px"
+              textDecoration="none"
+              position="relative"
+              pb={2}
+              borderBottom={activeTab === "contacts" ? "1px solid #c4a484" : "none"}
+              _hover={{ color: "#1a1a1a" }}
+              transition="all 0.3s ease"
+            >
+              <Text>контакты</Text>
+            </Link>
+          </HStack>
+        </Flex>
+      </Container>
+    </Box>
+  );
 }

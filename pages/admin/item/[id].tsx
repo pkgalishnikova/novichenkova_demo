@@ -1,5 +1,5 @@
 // pages/admin/item/[id].tsx (Admin edit page)
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import {
@@ -64,14 +64,12 @@ export default function AdminEditItemPage() {
     }
   }, [id, session, status, isAdmin]);
 
-  const loadItem = async () => {
+  const loadItem = useCallback(async () => {
     try {
       setIsLoading(true);
       const res = await fetch(`/api/items/${id}`);
 
-      if (!res.ok) {
-        throw new Error("Failed to load item");
-      }
+      if (!res.ok) throw new Error("Failed to load item");
 
       const data = await res.json();
       setItem(data);
@@ -89,7 +87,18 @@ export default function AdminEditItemPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id, toast]);
+
+  useEffect(() => {
+    if (status === "loading") return;
+
+    if (!session || !isAdmin) {
+      router.push("/");
+      return;
+    }
+
+    if (id) loadItem();
+  }, [id, session, status, isAdmin, loadItem, router]);
 
   const handleSave = async () => {
     try {
@@ -267,7 +276,7 @@ export default function AdminEditItemPage() {
           </FormControl>
 
           <FormControl>
-            <FormLabel>Вес (например, "300 Г")</FormLabel>
+            <FormLabel>Вес (например, &quot;300 Г&quot;)</FormLabel>
             <Input
               placeholder="300 Г"
               value={editForm.weight || ""}
@@ -276,7 +285,7 @@ export default function AdminEditItemPage() {
           </FormControl>
 
           <FormControl>
-            <FormLabel>Габариты (например, "20 × 20 × 2 СМ")</FormLabel>
+            <FormLabel>Габариты (например, &quot;20 × 20 × 2 СМ&quot;)</FormLabel>
             <Input
               placeholder="20 × 20 × 2 СМ"
               value={editForm.dimensions || ""}
